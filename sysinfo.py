@@ -82,7 +82,11 @@ def processor_times():
     }
 
 def operating_system_bit_width():
-    return int(platform.machine()[-2:])
+    machine = platform.machine()
+    if machine == 'x86':
+        return 32
+    elif machine == 'AMD64':
+        return 64
 
 def network_hostname():
     return socket.getfqdn()
