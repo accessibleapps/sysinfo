@@ -96,12 +96,12 @@ def interpreter_bit_width():
 
 def interpreter_memory_used():
     process = get_process(os.getpid())
-    memory_info = process.get_memory_info()
+    memory_info = process.memory_info()
     return memory_info[0]
 
 def interpreter_os_threads():
     process = get_process(os.getpid())
-    return len(process.get_threads())
+    return len(process.threads())
 
 def interpreter_python_threads():
     return len(threading.enumerate())
@@ -140,17 +140,17 @@ def get_partition_size(mountpoint):
     }
 
 def get_process(pid):
-    processes = [i for i in psutil.get_process_list() if i.pid == pid]
+    processes = [i for i in psutil.process_iter() if i.pid == pid]
     if not processes:
         raise RuntimeError("No such pid: %r" % pid)
     return processes[0]
 
 def memory_total():
-    return psutil.phymem_usage()[0]
+    return psutil.virtual_memory().total
 
 def memory_used():
-    return psutil.used_phymem()
+    return psutil.virtual_memory().used
 
 def memory_free():
-    return psutil.avail_phymem()
+    return psutil.virtual_memory().free
 
